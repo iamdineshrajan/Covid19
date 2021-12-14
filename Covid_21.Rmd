@@ -1,0 +1,244 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+# COVID19 DATA SET REPORT BY PERFORMING EXPLORATORY DATA ANALYSIS[1st Mar,2021 - 15th Apr,2021]
+
+### DINESH RAJAN R A
+### 20CSEG06
+
+__Data is taken from__ 
+(https://api.covid19india.org/)
+
+## Importing the csv file
+```{r}
+d1=read.csv("C:\\Users\\DELL\\Documents\\covid19_chetvl_2021.csv")
+```
+
+### To know about the loaded csv file
+```{r}
+str(d1)
+```
+
+### Getting the five point summary of the dataset d1
+```{r}
+summary(d1)
+```
+
+### To view the dataset d1
+```{r}
+View(d1)
+```
+
+### To subset the data with district as the variable
+```{r}
+c=subset(d1,DISTRICT=="CHENNAI")
+```
+
+```{r}
+t=subset(d1,DISTRICT=="THIRUVALLUR")
+```
+
+### To know about the "c" data which we subsetted
+```{r}
+str(c)
+```
+
+```{r}
+str(t)
+```
+
+### To get the five point summmary
+```{r}
+summary(c)
+```
+
+```{r}
+summary(t)
+```
+
+### To view the data c & t
+```{r}
+View(c)
+```
+
+```{r}
+View(t)
+```
+
+
+### We further spilit the data into month wise
+```{r}
+mar_c=c[1:31,]
+mar_c
+str(mar_c)
+summary(mar_c)
+```
+
+```{r}
+apr_c=c[32:46,]
+apr_c
+str(apr_c)
+summary(apr_c)
+```
+
+```{r}
+mar_t=t[1:31,]
+mar_t
+str(mar_t)
+summary(mar_t)
+```
+
+```{r}
+apr_t=t[32:46,]
+apr_t
+str(apr_t)
+summary(apr_t)
+```
+
+### to know about month wise data
+```{r}
+summary(mar_c)
+```
+
+```{r}
+summary(apr_c)
+```
+### load the required package for visualization
+```{r}
+library(lattice)
+```
+
+### Histogram
+
+```{r}
+histogram(~CONFIRMED.CASES|DATE.2021.,data=apr_t,main="Confirmed cases in april 21 (tvl)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="orange")
+histogram(~ACTIVE.CASES|DATE.2021.,data=apr_t,main="Active cases in april 21 (tvl)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="blue")
+histogram(~DECEASED.CASES|DATE.2021.,data=apr_t,main="Deceased cases in april 21 (tvl)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="red")
+histogram(~RECOVERED.CASES|DATE.2021.,data=apr_t,main="Recovered cases in april 21 (tvl)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="green")
+
+
+histogram(~DECEASED.CASES|DATE.2021.,data=apr_c,main="Deceased cases in april 21 (che)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="red")
+histogram(~RECOVERED.CASES|DATE.2021.,data=apr_c,main="Recovered cases in april 21 (che)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="green")
+histogram(~ACTIVE.CASES|DATE.2021.,data=apr_c,main="Active cases in april 21 (che)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="blue")
+histogram(~CONFIRMED.CASES|DATE.2021.,data=apr_c,main="Confirmed cases in april 21 (che)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="orange")
+
+
+histogram(~CONFIRMED.CASES|DATE.2021.,data=mar_t,main="Confirmed cases in march 21 (tvl)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="orange")
+histogram(~ACTIVE.CASES|DATE.2021.,data=mar_t,main="Active cases in march 21 (tvl)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="blue")
+histogram(~DECEASED.CASES|DATE.2021.,data=mar_t,main="Deceased cases in march 21 (tvl)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="red")
+histogram(~RECOVERED.CASES|DATE.2021.,data=mar_t,main="Recovered cases in march 21 (tvl)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="green")
+
+
+histogram(~CONFIRMED.CASES|DATE.2021.,data=mar_c,main="Confirmed cases in march 21 (che)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="orange")
+histogram(~ACTIVE.CASES|DATE.2021.,data=mar_c,main="Active cases in march 21 (che)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="blue")
+histogram(~DECEASED.CASES|DATE.2021.,data=mar_c,main="Deceased cases in march 21 (che)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="red")
+histogram(~RECOVERED.CASES|DATE.2021.,data=mar_c,main="Recovered cases in march 21 (che)",breaks=40,
+          xlab="CASES",ylab="DAYS",col="green")
+```
+
+
+### Boxplot
+```{r}
+boxplot(apr_c$DECEASED.CASES,main="DC in Chennai(april)")
+boxplot(apr_c$ACTIVE.CASES,main="AC in Chennai(april)")
+boxplot(apr_c$CONFIRMED.CASES,main="CC in Chennai(april)")
+boxplot(apr_c$RECOVERED.CASES,main="RC in Chennai(april)")
+
+
+boxplot(apr_t$DECEASED.CASES,main="DC in Thiruvallur(april)")
+boxplot(apr_t$ACTIVE.CASES,main="AC in Thiruvallur(april)")
+boxplot(apr_t$CONFIRMED.CASES,main="CC in Thiruvallur(april)")
+boxplot(apr_t$RECOVERED.CASES,main="RC in Thiruvallur(april)")
+
+boxplot(mar_c$DECEASED.CASES,main="DC in Chennai(march)")
+boxplot(mar_c$ACTIVE.CASES,main="AC in Chennai(march)")
+boxplot(mar_c$CONFIRMED.CASES,main="CC in Chennai(march)")
+boxplot(mar_c$RECOVERED.CASES,main="RC in Chennai(march)")
+
+boxplot(mar_t$DECEASED.CASES,main="DC in Thiruvallur(march)")
+boxplot(mar_t$ACTIVE.CASES,main="AC in Thiruvallur(march)")
+boxplot(mar_t$CONFIRMED.CASES,main="CC in Thiruvallur(march)")
+boxplot(mar_t$RECOVERED.CASES,main="RC in Thiruvallur(march)")
+```
+
+### Scatter plot
+```{r}
+plot(apr_c$DECEASED.CASES,main="DC in Chennai(april)",xlab="Days",ylab = "Cases",type = "l",col="red")
+plot(apr_c$RECOVERED.CASES,main="RC in Chennai(april)",xlab="Days",ylab = "Cases",type = "l",col="green")
+plot(apr_c$CONFIRMED.CASES,main="CC in Chennai(april)",xlab="Days",ylab = "Cases",type = "l",col="orange")
+plot(apr_c$ACTIVE.CASES,main="AC in Chennai(april)",xlab="Days",ylab = "Cases",type = "l",col="blue")
+
+plot(apr_t$DECEASED.CASES,main="DC in Thiruvallur(april)",xlab="Days",ylab = "Cases",type = "l",col="red")
+plot(apr_t$RECOVERED.CASES,main="RC in Thiruvallur(april)",xlab="Days",ylab = "Cases",type = "l",col="green")
+plot(apr_t$CONFIRMED.CASES,main="CC in Thiruvallur(april)",xlab="Days",ylab = "Cases",type = "l",col="orange")
+plot(apr_t$ACTIVE.CASES,main="AC in Thiruvallur(april)",xlab="Days",ylab = "Cases",type = "l",col="blue")
+
+plot(mar_c$DECEASED.CASES,main="DC in Chennai(march)",xlab="Days",ylab = "Cases",type = "l",col="red")
+plot(mar_c$RECOVERED.CASES,main="RC in Chennai(march)",xlab="Days",ylab = "Cases",type = "l",col="green")
+plot(mar_c$CONFIRMED.CASES,main="CC in Chennai(march)",xlab="Days",ylab = "Cases",type = "l",col="orange")
+plot(mar_c$ACTIVE.CASES,main="AC in Chennai(march)",xlab="Days",ylab = "Cases",type = "l",col="blue")
+
+
+plot(mar_t$DECEASED.CASES,main="DC in Thiruvallur(march)",xlab="Days",ylab = "Cases",type = "l",col="red")
+plot(mar_t$RECOVERED.CASES,main="RC in Thiruvallur(march)",xlab="Days",ylab = "Cases",type = "l",col="green")
+plot(mar_t$CONFIRMED.CASES,main="CC in Thiruvallur(march)",xlab="Days",ylab = "Cases",type = "l",col="orange")
+plot(mar_t$ACTIVE.CASES,main="AC in Thiruvallur(march)",xlab="Days",ylab = "Cases",type = "l",col="blue")
+```
+
+## About this data 
+
+This data is taken from the portal (https://api.covid19india.org/)
+This data is of the period [1st March, 2021 to 15th April, 2021]
+
+This data contains the Covid19 cases with number of confirmed,active,recovered and deceased cases in the districts of CHENNAI and THIRUVALLUR
+
+### Working on the data
+ We have subsetted the data with districts as a variable
+ And with that we have found that we could even more slice the data for taking month wise analysis.
+ So, the data is again subsetted for the month MARCH and APRIL.
+ 
+ With the above dataset, it is easier to visualize the data with Histogram, Boxplot and Scatter plot.
+
+## Insights
+### CHENNAI
+From the data we have visualized, we come to know that in Chennai the rate of confirmed cases have been increased 3 times higher in april than march. Since, we take the first 15 days in april, we compare it with the 1st 15 days of march which is `r quantile(mar_c$CONFIRMED.CASES,.25)` which is way less than `r mean(apr_c$CONFIRMED.CASES)`  
+
+Also, the deceased case in chennai is like the confirmed cases.
+In march every day at an avg of `r mean(mar_c$DECEASED.CASES)` deceased cases is registered.
+but in April it is increased by 5 times.
+Comparing it with March first 15 days we have `r quantile(mar_c$DECEASED.CASES,.25)` but for april it is recorded as `r mean(apr_c$DECEASED.CASES)` which tells the people of chennai district to take necessary precaution and be safe.
+The plots also prove us the same information.
+
+### THIRUVALLUR
+From the data we have visualized, we come to know that in Thiruvallur the rate of confirmed cases have been increased 5 to 6 times compared to April.
+Till March 15th we have `r quantile(mar_t$CONFIRMED.CASES,.25)` cases per day. But in APRIL, we founded out the cases to be `r mean(apr_t$CONFIRMED.CASES)` per day. Which alarms the people and government to think about it.
+
+But the good thing which has been founded out was the Deceased rate to be in controlled. In March, `r quantile(mar_t$DECEASED.CASES,.25)` cases was recorded and in April, it is `r mean(apr_t$DECEASED.CASES)` which is well and truly in control.
+
+Interestingly, we found out that every cases that were recorded during the first 15 days of March was converted into Recovered case. Which is the good thing.
+
+### Comparing the two districts
+
+In chennai it is recorded that `r mean(c$CONFIRMED.CASES)` cases have been positive to covid19 each day, while,  it is 4 times higher than the cases `r mean(t$CONFIRMED.CASES)` recorded in Thiruvallur per day.
+
+The data suggests us that almost every person who tested Covid19 positive during the period of [1st Mar,2021 - 15th Apr,2021] in THIRUVALLUR has been RECOVERED as we have `r mean(t$DECEASED.CASES)` cases of Deceased cases.
+--------------------------------------------------------------------------------------------------------------
+
+==============================================================================================================

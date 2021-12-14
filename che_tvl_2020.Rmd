@@ -1,0 +1,529 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+# COVID19 DATA SET REPORT BY PERFORMING EXPLORATORY DATA ANALYSIS
+
+### DINESH RAJAN R A
+### 20CSEG06
+
+__Data is taken from__ 
+(https://api.covid19india.org/)
+
+## importing the data set
+```{r}
+d1=read.csv("C:\\Users\\DELL\\Documents\\2020.csv")
+# we are importing a csv file
+```
+
+## to know the data types of the data set which we imported
+```{r}
+str(d1)
+```
+
+## to know the five point summary of the data
+```{r}
+summary(d1)
+```
+
+## to view the dataset
+```{r}
+View(d1)
+```
+
+## to subset the data into two different parts with DISTRICT as an attribute
+```{r}
+che=subset(d1,DISTRICT=="CHENNAI")
+tvl=subset(d1,DISTRICT=="THIRUVALLUR")
+```
+
+## to know about the subsetted data set
+```{r}
+str(che)
+str(tvl)
+```
+
+## to get the five point summmary of the subsetted data set
+```{r}
+summary(che)
+summary(tvl)
+```
+
+## to view the dataset which we sliced
+```{r}
+View(che)
+View(tvl)
+```
+
+### now we have three datasets 
+### with 18 observations of 8 variables
+### we are going to visualize the data with the basic package hist()
+### and visualize the mean and median of the different variables
+
+## hist of the Chennai dataset 
+### confirmed cases
+```{r}
+hist(che$CONFIRMED.CASES,xlab = "CASES",ylab = "MONTH",main = "CONFIRMED CASES in CHENNAI(2020)",breaks = 15,
+     xlim = c(0,50000),ylim = c(0,6),col = "grey",border = "green")
+abline(v=mean(che$CONFIRMED.CASES),col="blue",lwd=6)
+abline(v=median(che$CONFIRMED.CASES),col="black",lwd=6)
+legend(x="topright",c("mean","median"),col = c("blue","black"),lwd=c(6,6))
+```
+
+### Active cases
+```{r}
+hist(che$ACTIVE.CASES,xlab = "CASES",ylab = "MONTH",main = "ACTIVE CASES in CHENNAI(2020)",breaks =10,
+     xlim = c(0,25000),ylim = c(0,6),col = "orange",border = "green")
+abline(v=mean(che$ACTIVE.CASES),col="blue",lwd=6)
+abline(v=median(che$ACTIVE.CASES),col="black",lwd=6)
+legend(x="topright",c("mean","median"),col = c("blue","black"),lwd=c(6,6))
+```
+
+### recovered cases
+```{r}
+hist(che$RECOVERED.CASES,xlab = "CASES",ylab = "MONTH",breaks=10,main = "RECOVERED CASES in CHENNAI(2020)",
+     xlim = c(0,60000),ylim = c(0,10),col = "green",border = "orange")
+abline(v=mean(che$RECOVERED.CASES),col="blue",lwd=6)
+abline(v=median(che$RECOVERED.CASES),col="black",lwd=6)
+legend(x="topright",c("mean","median"),col = c("blue","black"),lwd=c(6,6))
+```
+
+### Deceased cases
+```{r}
+hist(che$DECEASED.CASES,xlab = "CASES",ylab = "MONTH",breaks=20,main = "DECEASED CASES in CHENNAI(2020)",
+     xlim = c(0,1200),ylim = c(0,10),col = "red",border = "black")
+abline(v=mean(che$DECEASED.CASES),col="blue",lwd=4)
+abline(v=median(che$DECEASED.CASES),col="black",lwd=4)
+legend(x="topright",c("mean","median"),col = c("blue","black"),lwd=c(6,6))
+```
+
+## hist of the thiruvallur data set
+### confirmed cases
+```{r}
+hist(tvl$CONFIRMED.CASES,xlab = "CASES",ylab = "MONTH",main = "CONFIRMED CASES in THIRUVALLUR(2020)",breaks = 15,
+     xlim = c(0,12000),ylim = c(0,6),col = "grey",border = "green")
+abline(v=mean(tvl$CONFIRMED.CASES),col="blue",lwd=6)
+abline(v=median(tvl$CONFIRMED.CASES),col="black",lwd=6)
+legend(x="topright",c("mean","median"),col = c("blue","black"),lwd=c(6,6))
+```
+
+### active cases
+```{r}
+hist(tvl$ACTIVE.CASES,xlab = "CASES",ylab = "MONTH",main = "ACTIVE CASES in THIRUVALLUR(2020)",breaks =10,
+     xlim = c(0,4000),ylim = c(0,6),col = "orange",border = "green")
+abline(v=mean(tvl$ACTIVE.CASES),col="blue",lwd=6)
+abline(v=median(tvl$ACTIVE.CASES),col="black",lwd=6)
+legend(x="topright",c("mean","median"),col = c("blue","black"),lwd=c(6,6))
+```
+
+### recovered cases
+```{r}
+hist(tvl$RECOVERED.CASES,xlab = "CASES",ylab = "MONTH",breaks=10,main = "RECOVERED CASES in THIRUVALLUR(2020)",
+     xlim = c(0,14000),ylim = c(0,10),col = "green",border = "orange")
+abline(v=mean(tvl$RECOVERED.CASES),col="blue",lwd=6)
+abline(v=median(tvl$RECOVERED.CASES),col="black",lwd=6)
+legend(x="topright",c("mean","median"),col = c("blue","black"),lwd=c(6,6))
+```
+
+### deceased cases
+```{r}
+hist(tvl$DECEASED.CASES,xlab = "CASES",ylab = "MONTH",breaks=20,main = "DECEASED CASES in THIRUVALLUR(2020)",
+     xlim = c(0,200),ylim = c(0,10),col = "red",border = "black")
+abline(v=mean(tvl$DECEASED.CASES),col="blue",lwd=6)
+abline(v=median(tvl$DECEASED.CASES),col="black",lwd=6)
+legend(x="topright",c("mean","median"),col = c("blue","black"),lwd=c(6,6))
+```
+## now, for working with lattice package 
+### the library should be called
+
+```{r}
+library(lattice)
+```
+
+## getting histogram with lattice package
+### histogram for chennai district
+```{r}
+histogram(~CONFIRMED.CASES|MONTH,data = che,breaks = 50,main="CONFIRMED COVID19 CASES IN CHENNAI(2020)",xlab = "CASES",ylab = "MONTH",xlim = c(0,50000),ylim = c(0,100),col="grey",border="green")
+```
+
+```{r}
+histogram(~ACTIVE.CASES|MONTH,data = che,breaks = 50,main="ACTIVE COVID19 CASES IN CHENNAI(2020)",xlab = "CASES",ylab = "MONTH",xlim = c(0,30000),ylim = c(0,100),col="orange", border="grey")
+```
+
+```{r}
+histogram(~RECOVERED.CASES|MONTH,data = che,breaks = 50,main="RECOVERED COVID19 CASES IN CHENNAI(2020)", xlab = "CASES",ylab = "MONTH",xlim = c(0,60000),ylim = c(0,100),col="green", border="grey")
+```
+
+```{r}
+histogram(~DECEASED.CASES|MONTH,data = che,breaks = 50,main="DECEASED COVID19 CASES IN CHENNAI(2020)",xlab = "CASES",ylab = "MONTH",xlim = c(0,2000),ylim = c(0,100),col="red", border="grey")
+```
+
+### histogram for thiruvallur district
+```{r}
+histogram(~CONFIRMED.CASES|MONTH,data = tvl,breaks = 15,main="CONFIRMED COVID19 CASES IN THIRUVALLUR(2020)",xlab = "CASES",ylab = "MONTH",xlim = c(0,18000),ylim = c(0,6),col="grey",border="green")
+```
+
+```{r}
+histogram(~ACTIVE.CASES|MONTH,data = tvl,breaks = 10,main="ACTIVE COVID19 CASES IN THIRUVALLUR(2020)", xlab = "CASES",ylab = "MONTH",xlim = c(0,4000),ylim = c(0,6),col="orange", border="grey")
+```
+
+```{r}
+histogram(~RECOVERED.CASES|MONTH,data = tvl,breaks = 10,main="RECOVERED COVID19 CASES IN THIRUVALLUR(2020)",xlab = "CASES",ylab = "MONTH",xlim = c(0,60000),ylim = c(0,10),col="green", border="grey")
+```
+
+```{r}
+histogram(~DECEASED.CASES|MONTH,data = tvl,breaks = 20,main="DECEASED COVID19 CASES IN THIRUVALLUR(2020)",xlab = "CASES",ylab = "MONTH",xlim = c(0,2000),ylim = c(0,10),col="red", border="grey")
+```
+
+### histogram comparison for the two districts using the original data
+```{r}
+histogram(~CONFIRMED.CASES|MONTH,data = d1,breaks = 15,main="CONFIRMED COVID19 CASES IN CHENNAI & THIRUVALLUR(2020)",
+          xlab = "CASES",ylab = "MONTH",xlim = c(0,50000),ylim = c(0,100),col="grey",border="green")
+```
+
+```{r}
+histogram(~ACTIVE.CASES|MONTH,data = d1,breaks = 10,main="ACTIVE COVID19 CASES IN CHENNAI & THIRUVALLUR(2020)",
+          xlab = "CASES",ylab = "MONTH",xlim = c(0,22000),ylim = c(0,100),col="orange", border="grey")
+```
+
+```{r}
+histogram(~RECOVERED.CASES|MONTH,data = d1,breaks = 10,main="RECOVERED COVID19 CASES IN CHENNAI & THIRUVALLUR(2020)",
+          xlab = "CASES",ylab = "MONTH",xlim = c(0,60000),ylim = c(0,100),col="green", border="grey")
+```
+
+```{r}
+histogram(~DECEASED.CASES|MONTH,data = d1,breaks = 20,main="DECEASED COVID19 CASES IN CHENNAI & THIRUVALLUR(2020)",
+          xlab = "CASES",ylab = "MONTH",xlim = c(0,2000),ylim = c(0,100),col="red", border="grey")
+```
+
+## boxplot from the basic package
+### boxplot for the two district to know the percentiles
+```{r}
+boxplot(d1$ACTIVE.CASES,main="AC",las=3,col = "yellow")
+```
+
+```{r}
+boxplot(d1$RECOVERED.CASES,main="RC",las=3,col = "green")
+```
+
+```{r}
+boxplot(d1$DECEASED.CASES,main="DC",las=2,col = "red")
+```
+
+```{r}
+boxplot(d1$CONFIRMED.CASES,main="CC",las=3,col = "orange")
+```
+
+### month vs confirmed,active,recovered,deceased and test taken
+
+```{r}
+boxplot(MONTH..in.number.~CONFIRMED.CASES,data=d1,main="MONTH vs CC",las=3,col=c("red","blue"))
+```
+```{r}
+boxplot(MONTH..in.number.~ACTIVE.CASES,data=d1,main="MONTH vs AC",las=3,col=c("red","blue"))
+```
+```{r}
+boxplot(MONTH..in.number.~RECOVERED.CASES,data=d1,main="MONTH vs RC",las=3,col=c("red","blue"))
+```
+```{r}
+boxplot(MONTH..in.number.~DECEASED.CASES,data=d1,main="MONTH vs DC",las=3,col=c("red","blue"))
+```
+```{r}
+boxplot(MONTH..in.number.~TEST.TAKEN,data=d1,main="MONTH vs Test",las=3,col=c("red","blue"))
+```
+
+### boxplot for chennai cases
+```{r}
+boxplot(che$ACTIVE.CASES,main="AC in chennai",col="orange")
+```
+
+```{r}
+boxplot(che$RECOVERED.CASES,main="RC in chennai",col = "green")
+```
+
+```{r}
+boxplot(che$DECEASED.CASES,main="DC in chennai",col="red")
+```
+
+```{r}
+boxplot(che$CONFIRMED.CASES,main="CC in chennai",col = "blue")
+```
+
+```{r}
+boxplot(che$TEST.TAKEN,main="Tests taken in chennai",col="yellow")
+```
+
+### boxplot for thiruvallur cases
+```{r}
+boxplot(tvl$ACTIVE.CASES,main="AC in chennai",col="orange")
+```
+
+```{r}
+boxplot(tvl$RECOVERED.CASES,main="RC in chennai",col = "green")
+```
+
+```{r}
+boxplot(tvl$DECEASED.CASES,main="DC in chennai",col="red")
+```
+
+```{r}
+boxplot(tvl$CONFIRMED.CASES,main="CC in chennai",col = "blue")
+```
+
+```{r}
+boxplot(tvl$TEST.TAKEN,main="Tests taken in chennai",col="yellow")
+```
+
+### month vs confirmed,active,recovered,deceased and tests taken in thiruvallur
+
+```{r}
+boxplot(MONTH..in.number.~CONFIRMED.CASES,data=tvl,main="MONTH vs CC in thiruvallur",las=3,col=c("red","blue"))
+```
+
+```{r}
+boxplot(MONTH..in.number.~ACTIVE.CASES,data=tvl,main="MONTH vs AC in thiruvallur",las=3,col=c("red","blue"))
+```
+
+```{r}
+boxplot(MONTH..in.number.~RECOVERED.CASES,data=tvl,main="MONTH vs RC in thiruvallur",las=3,col=c("red","blue"))
+```
+
+```{r}
+boxplot(MONTH..in.number.~DECEASED.CASES,data=tvl,main="MONTH vs DC in thiruvallur",las=3,col=c("red","blue"))
+```
+
+```{r}
+boxplot(MONTH..in.number.~TEST.TAKEN,data=tvl,main="MONTH vs Test in thiruvallur",las=3,col=c("red","blue"))
+```
+
+## bwplot which is the boxplot in lattice package
+### month vs all numerical variables in thiruvallur dt.
+```{r}
+boxplot(MONTH..in.number.~CONFIRMED.CASES,data=tvl,main="MONTH vs CC in thiruvallur",las=3,col=c("red","blue"))
+```
+
+```{r}
+boxplot(MONTH..in.number.~ACTIVE.CASES,data=tvl,main="MONTH vs AC in thiruvallur",las=3,col=c("red","blue"))
+```
+
+```{r}
+boxplot(MONTH..in.number.~RECOVERED.CASES,data=tvl,main="MONTH vs RC in thiruvallur",las=3,col=c("red","blue"))
+```
+
+```{r}
+boxplot(MONTH..in.number.~DECEASED.CASES,data=tvl,main="MONTH vs DC in thiruvallur",las=3,col=c("red","blue"))
+```
+
+```{r}
+boxplot(MONTH..in.number.~TEST.TAKEN,data=tvl,main="MONTH vs Test in thiruvallur",las=3,col=c("red","blue"))
+```
+
+
+### month vs all numerical variables in chennai dt.
+```{r}
+bwplot(~MONTH..in.number.|DECEASED.CASES,data=che,main="Month vs DC in chennai",xlab = "Month",ylab = "DC",col=c("red","blue"))
+```
+
+```{r}
+bwplot(~MONTH..in.number.|RECOVERED.CASES,data=che,main="Month vs RC in chennai",xlab = "Month",ylab = "RC",col=c("red","blue"))
+```
+
+```{r}
+bwplot(~MONTH..in.number.|ACTIVE.CASES,data=che,main="Month vs AC in chennai",xlab = "Month",ylab = "AC",col=c("red","blue"))
+```
+
+```{R}
+bwplot(~MONTH..in.number.|CONFIRMED.CASES,data=che,main="Month vs CC in chennai",xlab = "Month",ylab = "CC",col=c("red","blue"))
+```
+
+```{r}
+bwplot(~MONTH..in.number.|TEST.TAKEN,data=che,main="Month vs Tests in chennai",xlab = "Month",ylab = "Tests",col=c("red","blue"))
+```
+
+
+### month vs confirmed,active,recovered,deceased and tets taken in both districts
+
+```{r}
+bwplot(~MONTH..in.number.|DECEASED.CASES,data=d1,main="Month vs DC in chennai & thiruvallur",xlab = "Month",ylab = "DC",col=c("red","blue"))
+```
+
+```{r}
+bwplot(~MONTH..in.number.|RECOVERED.CASES,data=d1,main="Month vs RC in chennai & thiruvallur",xlab = "Month",ylab = "RC",col=c("red","blue"))
+```
+
+```{r}
+bwplot(~MONTH..in.number.|ACTIVE.CASES,data=d1,main="Month vs AC in chennai & thiruvallur",xlab = "Month",ylab = "AC",col=c("red","blue"))
+```
+
+```{r}
+bwplot(~MONTH..in.number.|CONFIRMED.CASES,data=d1,main="Month vs CC in chennai & thiruvallur",xlab = "Month",ylab = "CC",col=c("red","blue"))
+```
+
+```{r}
+bwplot(~MONTH..in.number.|TEST.TAKEN,data=d1,main="Month vs Tests in chennai & thiruvallur",xlab = "Month",ylab = "Tests",col=c("red","blue"))
+```
+
+## scatter plot from the basic package to show the graph of this dataset
+
+### plot displaying the pattern of the cases in chennai
+```{r}
+plot(x=che$MONTH..in.number.,y=che$DECEASED.CASES,xlab = "MONTH",ylab = "DC",main = "DC in month(chennai)",xlim = c(0,12),ylim = c(0,1200),type = "l",col="red")
+```
+
+```{r}
+plot(x=che$MONTH..in.number.,y=che$CONFIRMED.CASES,xlab = "MONTH",ylab = "CC",main = "CC in month(chennai)",xlim = c(0,12),ylim = c(0,44000),type = "l",col="orange")
+```
+
+```{r}
+plot(x=che$MONTH..in.number.,y=che$RECOVERED.CASES,xlab = "MONTH",ylab = "RC",main = "RC in month(chennai)",xlim = c(0,12),ylim = c(0,50000),type = "l",col="green")
+```
+
+```{r}
+plot(x=che$MONTH..in.number.,y=che$ACTIVE.CASES,xlab = "MONTH",ylab = "AC",main = "AC in month(chennai)",xlim = c(0,12),ylim = c(0,22000),type = "l",col="blue")
+```
+
+```{r}
+plot(x=che$MONTH..in.number.,y=che$TEST.TAKEN,xlab = "MONTH",ylab = "Tests",main = "Tests Taken in month(chennai)",xlim = c(0,12),type = "l",col="black")
+```
+
+### plot displaying the pattern of the cases in thiruvallur
+
+```{r}
+plot(x=tvl$MONTH..in.number.,y=tvl$DECEASED.CASES,xlab = "MONTH",ylab = "DC",main = "DC in month(thiruvallur)",xlim = c(0,12),ylim = c(0,200),type = "l",col="red")
+```
+
+```{r}
+plot(x=tvl$MONTH..in.number.,y=tvl$CONFIRMED.CASES,xlab = "MONTH",ylab = "CC",main = "CC in month(thiruvallur)",xlim = c(0,12),ylim = c(0,12000),type = "l",col="orange")
+```
+
+```{r}
+plot(x=tvl$MONTH..in.number.,y=tvl$RECOVERED.CASES,xlab = "MONTH",ylab = "RC",main = "RC in month(thiruvallur)",xlim = c(0,12),ylim = c(0,14000),type = "l",col="green")
+```
+
+```{r}
+plot(x=tvl$MONTH..in.number.,y=tvl$ACTIVE.CASES,xlab = "MONTH",ylab = "AC",main = "AC in month(thiruvallur)",xlim = c(0,12),ylim = c(0,4000),type = "l",col="blue")
+```
+
+```{r}
+plot(x=tvl$MONTH..in.number.,y=tvl$TEST.TAKEN,xlab = "MONTH",ylab = "Tests",main = "Tests Taken in month(thiruvallur)",xlim = c(0,12),type = "l",col="black")
+```
+
+### plot displaying the pattern of the cases in chennai and thiruvallur
+
+```{r}
+plot(x=d1$MONTH..in.number.,y=d1$DECEASED.CASES,xlab = "MONTH",ylab = "DC",main = "DC in month",xlim = c(0,12),ylim = c(0,1200),cex=2,col=c("red","dark green"))
+```
+
+```{r}
+plot(x=d1$MONTH..in.number.,y=d1$CONFIRMED.CASES,xlab = "MONTH",ylab = "CC",main = "CC in month",xlim = c(0,12),ylim = c(0,44000),cex=2,col=c("orange","dark blue"))
+```
+
+```{r}
+plot(x=d1$MONTH..in.number.,y=d1$RECOVERED.CASES,xlab = "MONTH",ylab = "RC",main = "RC in month",xlim = c(0,12),ylim = c(0,50000),cex=2,col=c("green","yellow"))
+```
+
+```{r}
+plot(x=d1$MONTH..in.number.,y=d1$ACTIVE.CASES,xlab = "MONTH",ylab = "AC",main = "AC in month",xlim = c(0,12),ylim = c(0,22000),cex=2,col=c("blue","red"))
+```
+
+```{r}
+plot(x=d1$MONTH..in.number.,y=d1$TEST.TAKEN,xlab = "MONTH",ylab = "Tests",main = "Tests Taken in month",xlim = c(0,12),cex=2,col=c("black","yellow"))
+```
+
+### scatter plot using lattice package (xyplot)
+
+### month vs all cases in chennai district
+```{r}
+xyplot(MONTH..in.number.~ACTIVE.CASES|MONTH,data=che,main="MONTH vs AC(chennai)",xlab = "Active Cases",ylab = "MONTH",col="yellow",cex=2,pch=10)
+```
+
+```{r}
+xyplot(MONTH..in.number.~DECEASED.CASES|MONTH,data=che,main="MONTH vs DC(chennai)",xlab = "Deceased Cases",ylab = "MONTH",col="red",cex=2,pch=25)
+```
+
+```{r}
+xyplot(MONTH..in.number.~RECOVERED.CASES|MONTH,data=che,main="MONTH vs RC(chennai)",xlab = "Recovered Cases",ylab = "MONTH",col="green",cex=2,pch=3)
+```
+
+```{r}
+xyplot(MONTH..in.number.~CONFIRMED.CASES|MONTH,data=che,main="MONTH vs CC(chennai)",xlab = "Confirmed Cases",ylab = "MONTH",col="orange",cex=2,pch=17)
+```
+
+```{r}
+xyplot(MONTH..in.number.~TEST.TAKEN|MONTH,data=che,main="MONTH vs Tests(chennai)",xlab = "Tests Taken",ylab = "MONTH",col="yellow",cex=2,pch=11)
+```
+
+### month vs all cases in thiruvallur district
+
+```{r}
+xyplot(MONTH..in.number.~ACTIVE.CASES|MONTH,data=tvl,main="MONTH vs AC(thiruvallur)",xlab = "Active Cases",ylab = "MONTH",col="yellow",cex=2,pch=10)
+```
+
+```{r}
+xyplot(MONTH..in.number.~DECEASED.CASES|MONTH,data=tvl,main="MONTH vs DC(thiruvallur)",xlab = "Deceased Cases",ylab = "MONTH",col="red",cex=2,pch=25)
+```
+
+```{r}
+xyplot(MONTH..in.number.~RECOVERED.CASES|MONTH,data=tvl,main="MONTH vs RC(thiruvallur)",xlab = "Recovered Cases",ylab = "MONTH",col="green",cex=2,pch=3)
+```
+
+```{r}
+xyplot(MONTH..in.number.~CONFIRMED.CASES|MONTH,data=tvl,main="MONTH vs CC(thiruvallur)",xlab = "Confirmed Cases",ylab = "MONTH",col="orange",cex=2,pch=17)
+```
+
+```{r}
+xyplot(MONTH..in.number.~TEST.TAKEN|MONTH,data=tvl,main="MONTH vs Tests(thiruvallur)",xlab = "Tests Taken",ylab = "MONTH",col="black",cex=2,pch=11)
+```
+
+### comparison of the both districts
+
+```{r}
+xyplot(MONTH..in.number.~DECEASED.CASES|MONTH,data=d1,main="MONTH vs DC",xlab = "Deceased Cases",ylab = "MONTH",col=c("red","blue"),cex=2,pch=25)
+```
+
+```{r}
+xyplot(MONTH..in.number.~CONFIRMED.CASES|MONTH,data=d1,main="MONTH vs CC",xlab = "Confirmed Cases",ylab = "MONTH",col=c("orange","blue"),cex=2,pch=17)
+```
+
+```{r}
+xyplot(MONTH..in.number.~RECOVERED.CASES|MONTH,data=d1,main="MONTH vs RC",xlab = "Recovered Cases",ylab = "MONTH",col=c("green","blue"),cex=2,pch=3)
+```
+
+```{r}
+xyplot(MONTH..in.number.~ACTIVE.CASES|MONTH,data=d1,main="MONTH vs AC",xlab = "Active Cases",ylab = "MONTH",col=c("yellow","blue"),cex=2,pch=10)
+```
+
+```{r}
+xyplot(MONTH..in.number.~TEST.TAKEN|MONTH,data=d1,main="MONTH vs Tests",xlab = "Tests Taken",ylab = "MONTH",col=c("yellow","black"),cex=2,pch=11)
+```
+
+
+# About the data set 
+This is the dataset of covid 19 during the period of (April 26,2020 to December 31,2020) but in this data, we have taken the month end record of each month in 2020 year.
+This data is taken from (https://api.covid19india.org/)
+This dataset contains the number of cases registered in the two districts (CHENNAI & THIRUVALLUR) of TAMIL NADU.
+It contains attributes like month(in oder of year [in numbers]), month name, number of confirmed,active,recovered,deceased cases and tests taken to check covid.
+
+# Insights
+From the above visualization we come to know that chennai district is most affected by covid19
+both the districts faced their problems with high number during the month of JULY and AUGUST
+
+In Chennai on an average of  `r mean(che$CONFIRMED.CASES)` is affected every month.
+In Thiruvallur on an average of  `r mean(tvl$CONFIRMED.CASES)` is affected every month.
+
+But recovery rate in both the districts are  `r mean(d1$RECOVERED.CASES)` in every month which is also a good sign.
+
+Every time the district faced `r mean(d1$ACTIVE.CASES)` 
+
+The deceased cases where controlled by the month of AUGUST. Until then every month chennai faced `r quantile(che$DECEASED.CASES,.25)` which is very much not a good situation.
+
+And proving the above information we have the recovery rate of chennai after the month of AUGUST is `r quantile(che$RECOVERED.CASES,.75)` which as increased well.
+
+from this we come to know that the districts have come to know about the treatments and the way to protect the people from this virus.
+
+This is similar in the case of THIRUVALLUR district. But the only difference as been the amount of cases founded out to be way lesser than CHENNAI....
+------------------------------------------------------------------
+==================================================================
+
+
